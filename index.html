@@ -1,33 +1,355 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Propellic Hackathon — Team 6</title>
-    <style>
-      body {
-        min-height: 100vh;
-        margin: 0;
-        display: grid;
-        place-items: center;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        background: linear-gradient(135deg, #111827, #2563eb);
-        color: white;
-      }
-      main {
-        text-align: center;
-        padding: 2rem;
-      }
-      h1 {
-        font-size: clamp(2rem, 8vw, 5rem);
-        margin: 0;
-      }
-    </style>
-  </head>
-  <body>
-    <main>
-      <h1>Welcome to the Hackathon, Team 6!</h1>
-      <p style="opacity:0.7;margin-top:1rem;">milleniawatkins is in the building.</p>
-    </main>
-  </body>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Performance Creative Engine — Propellic</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- Header -->
+<header class="header">
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-mark">P</div>
+      <span>Propellic <span class="logo-product">Performance Creative Engine</span></span>
+    </div>
+    <div class="session-pill" id="session-pill">—</div>
+  </div>
+</header>
+
+<!-- App -->
+<main class="app">
+
+  <!-- Step nav -->
+  <nav class="steps-nav" id="steps-nav">
+    <div class="step-item active" data-step="1">
+      <div class="step-num"><span>1</span></div>
+      <div class="step-label">Data Sources</div>
+    </div>
+    <div class="step-connector" id="conn-1-2"></div>
+    <div class="step-item" data-step="2">
+      <div class="step-num"><span>2</span></div>
+      <div class="step-label">Documents</div>
+    </div>
+    <div class="step-connector" id="conn-2-3"></div>
+    <div class="step-item" data-step="3">
+      <div class="step-num"><span>3</span></div>
+      <div class="step-label">Configure</div>
+    </div>
+    <div class="step-connector" id="conn-3-4"></div>
+    <div class="step-item" data-step="4">
+      <div class="step-num"><span>4</span></div>
+      <div class="step-label">Generate</div>
+    </div>
+    <div class="step-connector" id="conn-4-5"></div>
+    <div class="step-item" data-step="5">
+      <div class="step-num"><span>5</span></div>
+      <div class="step-label">Export</div>
+    </div>
+  </nav>
+
+  <!-- ===== STEP 1: Data Sources ===== -->
+  <section class="panel active" id="panel-1">
+    <div class="panel-header">
+      <h2>Connect Data Sources</h2>
+      <p>Pull historical performance data to power AI-generated creative. All sources are optional — the more you connect, the stronger the output.</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Campaign Performance Data</div>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">
+        Export from <strong style="color:var(--text-dim)">Markifact</strong> or connect Meta directly via OAuth. Upload CSV/XLSX exports from your MCC.
+      </p>
+      <div class="card-grid">
+
+        <!-- Meta -->
+        <div class="source-tile">
+          <div class="source-tile-header">
+            <div class="source-icon meta">📘</div>
+            <div>
+              <div class="source-name">Meta Ads</div>
+              <div class="source-desc">Top campaigns by ROAS / CTR</div>
+            </div>
+          </div>
+          <div class="source-status" id="meta-status">Not connected</div>
+          <div class="source-actions">
+            <button class="btn btn-outline btn-sm" id="btn-meta-oauth" onclick="connectMeta()">
+              Connect via OAuth
+            </button>
+            <label class="btn btn-secondary btn-sm" style="cursor:pointer;">
+              Upload Export
+              <input type="file" accept=".csv,.xlsx,.xls,.tsv" onchange="uploadSourceFile('meta', this)" />
+            </label>
+          </div>
+        </div>
+
+        <!-- Google Ads -->
+        <div class="source-tile">
+          <div class="source-tile-header">
+            <div class="source-icon google">🔍</div>
+            <div>
+              <div class="source-name">Google Ads</div>
+              <div class="source-desc">Keywords & top ad copy</div>
+            </div>
+          </div>
+          <div class="source-status" id="google-status">Not connected</div>
+          <div class="source-actions">
+            <p style="font-size:12px;color:var(--text-muted);">Export from Markifact → upload below</p>
+            <label class="btn btn-secondary btn-sm" style="cursor:pointer;">
+              Upload Export
+              <input type="file" accept=".csv,.xlsx,.xls,.tsv" onchange="uploadSourceFile('google', this)" />
+            </label>
+          </div>
+        </div>
+
+        <!-- GA4 -->
+        <div class="source-tile">
+          <div class="source-tile-header">
+            <div class="source-icon ga4">📊</div>
+            <div>
+              <div class="source-name">GA4</div>
+              <div class="source-desc">Top converting landing pages</div>
+            </div>
+          </div>
+          <div class="source-status" id="ga4-status">Not connected</div>
+          <div class="source-actions">
+            <p style="font-size:12px;color:var(--text-muted);">Export from Markifact → upload below</p>
+            <label class="btn btn-secondary btn-sm" style="cursor:pointer;">
+              Upload Export
+              <input type="file" accept=".csv,.xlsx,.xls,.tsv" onchange="uploadSourceFile('ga4', this)" />
+            </label>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="panel-actions">
+      <button class="skip-link" onclick="goStep(2)">Skip — I'll generate from documents only</button>
+      <button class="btn btn-primary" onclick="goStep(2)">Continue →</button>
+    </div>
+  </section>
+
+  <!-- ===== STEP 2: Documents ===== -->
+  <section class="panel" id="panel-2">
+    <div class="panel-header">
+      <h2>Upload Documents</h2>
+      <p>The creative brief is required. Brand guidelines help Claude match the client's voice.</p>
+    </div>
+
+    <!-- Creative Brief -->
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div class="card-title" style="margin-bottom:0;">Creative Brief</div>
+        <span class="required-badge">Required</span>
+      </div>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">
+        Campaign goals, target audience, key messages, KPIs, budget context. Claude reads this first.
+      </p>
+      <div class="dropzone" id="brief-dropzone" onclick="document.getElementById('brief-input').click()"
+           ondragover="handleDragOver(event,'brief-dropzone')"
+           ondragleave="handleDragLeave('brief-dropzone')"
+           ondrop="handleDrop(event,'brief')">
+        <div class="dropzone-icon">📄</div>
+        <div class="dropzone-text">Drop your creative brief here or click to browse</div>
+        <div class="dropzone-hint">PDF, DOCX, TXT — single file</div>
+        <input type="file" id="brief-input" accept=".pdf,.docx,.txt" onchange="handleFileSelect('brief', this)" />
+      </div>
+      <div class="file-list" id="brief-files"></div>
+    </div>
+
+    <!-- Brand Guidelines -->
+    <div class="card">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div class="card-title" style="margin-bottom:0;">Brand Guidelines</div>
+        <span class="optional-badge">Optional</span>
+      </div>
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:16px;">
+        Any relevant client documents — brand guide, tone of voice, messaging matrix, product one-pagers. Upload as many as apply.
+      </p>
+      <div class="dropzone" id="brand-dropzone" onclick="document.getElementById('brand-input').click()"
+           ondragover="handleDragOver(event,'brand-dropzone')"
+           ondragleave="handleDragLeave('brand-dropzone')"
+           ondrop="handleDrop(event,'brand')">
+        <div class="dropzone-icon">📁</div>
+        <div class="dropzone-text">Drop brand documents here or click to browse</div>
+        <div class="dropzone-hint">PDF, DOCX, TXT — multiple files accepted</div>
+        <input type="file" id="brand-input" accept=".pdf,.docx,.txt" multiple onchange="handleFileSelect('brand', this)" />
+      </div>
+      <div class="file-list" id="brand-files"></div>
+    </div>
+
+    <div class="panel-actions">
+      <button class="btn btn-secondary" onclick="goStep(1)">← Back</button>
+      <button class="btn btn-primary" id="btn-step2-continue" onclick="goStep(3)" disabled>Continue →</button>
+    </div>
+  </section>
+
+  <!-- ===== STEP 3: Configure ===== -->
+  <section class="panel" id="panel-3">
+    <div class="panel-header">
+      <h2>Configure Generation</h2>
+      <p>Tell Claude what to focus on. These settings shape which angles, placements, and messages it prioritizes.</p>
+    </div>
+
+    <div class="card">
+      <div class="form-row">
+        <label for="campaign-name">Campaign Name <span style="color:var(--text-muted);font-weight:400;">(used in the export file)</span></label>
+        <input type="text" id="campaign-name" placeholder="e.g. Q3 Lead Gen — TOFU" />
+      </div>
+
+      <div class="form-grid">
+        <div class="form-row" style="margin-bottom:0;">
+          <label for="funnel-stage">Funnel Stage</label>
+          <select id="funnel-stage">
+            <option value="Awareness">Awareness (TOFU)</option>
+            <option value="Consideration" selected>Consideration (MOFU)</option>
+            <option value="Conversion">Conversion (BOFU)</option>
+            <option value="Retargeting">Retargeting</option>
+          </select>
+        </div>
+        <div class="form-row" style="margin-bottom:0;">
+          <label for="num-variants">Variants per Placement</label>
+          <select id="num-variants">
+            <option value="2">2</option>
+            <option value="3" selected>3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Target Placements</div>
+      <div class="checkbox-group" id="placement-group">
+        <label class="checkbox-label checked">
+          <input type="checkbox" value="Facebook Feed" checked onchange="updateCheckbox(this)"> Facebook Feed
+        </label>
+        <label class="checkbox-label checked">
+          <input type="checkbox" value="Instagram Feed" checked onchange="updateCheckbox(this)"> Instagram Feed
+        </label>
+        <label class="checkbox-label checked">
+          <input type="checkbox" value="Reels" checked onchange="updateCheckbox(this)"> Reels
+        </label>
+        <label class="checkbox-label checked">
+          <input type="checkbox" value="Stories" checked onchange="updateCheckbox(this)"> Stories
+        </label>
+        <label class="checkbox-label checked">
+          <input type="checkbox" value="Advantage+" checked onchange="updateCheckbox(this)"> Advantage+
+        </label>
+      </div>
+    </div>
+
+    <div class="panel-actions">
+      <button class="btn btn-secondary" onclick="goStep(2)">← Back</button>
+      <button class="btn btn-primary" onclick="goStep(4)">Generate Creative →</button>
+    </div>
+  </section>
+
+  <!-- ===== STEP 4: Generate ===== -->
+  <section class="panel" id="panel-4">
+
+    <!-- Pre-generate state -->
+    <div id="pre-generate" class="generate-hero">
+      <h2>Ready to Generate</h2>
+      <p id="generate-summary">Claude will analyze your data and generate placement-optimized Meta ad creative.</p>
+      <button class="btn btn-primary btn-lg" id="btn-generate" onclick="runGeneration()">
+        ✨ Generate Ad Creative
+      </button>
+      <div class="mt-16">
+        <button class="btn btn-secondary btn-sm" onclick="goStep(3)">← Adjust settings</button>
+      </div>
+    </div>
+
+    <!-- Loading state -->
+    <div class="loading-state" id="loading-state">
+      <div class="spinner"></div>
+      <div style="font-size:18px;font-weight:600;">Generating creative...</div>
+      <div class="loading-msg" id="loading-msg">Analyzing historical performance data...</div>
+    </div>
+
+    <!-- Results -->
+    <div id="results-state" class="hidden">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h2 style="font-size:22px;font-weight:700;">Generated Creative</h2>
+          <p style="color:var(--text-muted);font-size:13px;" id="results-subtitle"></p>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-secondary btn-sm" onclick="runGeneration()">Regenerate</button>
+          <button class="btn btn-primary btn-sm" onclick="goStep(5)">Export CSV →</button>
+        </div>
+      </div>
+
+      <!-- Analysis -->
+      <div class="analysis-section" id="analysis-section">
+        <h3>🔍 Performance Analysis</h3>
+        <div class="insights-text" id="insights-text"></div>
+        <div class="analysis-grid">
+          <div class="analysis-group">
+            <label>Winning Themes</label>
+            <div class="tag-row" id="tags-themes"></div>
+          </div>
+          <div class="analysis-group">
+            <label>Top Hooks</label>
+            <div class="tag-row" id="tags-hooks"></div>
+          </div>
+          <div class="analysis-group">
+            <label>Emotional Triggers</label>
+            <div class="tag-row" id="tags-triggers"></div>
+          </div>
+          <div class="analysis-group">
+            <label>Top CTAs</label>
+            <div class="tag-row" id="tags-ctas"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Placement tabs -->
+      <div class="placement-tabs" id="placement-tabs"></div>
+
+      <!-- Ads grid -->
+      <div class="ads-grid" id="ads-grid"></div>
+    </div>
+
+  </section>
+
+  <!-- ===== STEP 5: Export ===== -->
+  <section class="panel" id="panel-5">
+    <div class="export-hero">
+      <div class="check-circle">✓</div>
+      <h2>Ready to Export</h2>
+      <p>Your Meta-ready upload file is prepared. Import directly into Ads Manager → Import & Export.</p>
+      <div class="export-stats" id="export-stats"></div>
+      <button class="btn btn-success btn-lg" onclick="downloadCSV()">
+        ⬇ Download Meta Upload CSV
+      </button>
+      <div class="mt-16" style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+        <button class="btn btn-secondary btn-sm" onclick="goStep(4)">← Review Ads</button>
+        <button class="btn btn-secondary btn-sm" onclick="startOver()">Start New Session</button>
+      </div>
+    </div>
+    <div class="card mt-16">
+      <div class="card-title">How to Import into Meta Ads Manager</div>
+      <ol style="font-size:13px;color:var(--text-dim);line-height:2;padding-left:20px;">
+        <li>Open <strong style="color:var(--text)">Meta Ads Manager</strong></li>
+        <li>Click <strong style="color:var(--text)">Import &amp; Export → Import Ads</strong></li>
+        <li>Select <strong style="color:var(--text)">Upload a spreadsheet</strong></li>
+        <li>Upload the downloaded CSV file</li>
+        <li>Assign creative assets (images/videos) to each ad</li>
+        <li>Review and publish</li>
+      </ol>
+    </div>
+  </section>
+
+</main>
+
+<!-- Toast container -->
+<div class="toast-container" id="toast-container"></div>
+
+<script src="app.js"></script>
+</body>
 </html>
